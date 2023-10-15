@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken'
+import { validateAuthSchema } from '../schemas/auth'
 
 export class AuthController {
 	constructor({ authModel }) {
@@ -7,6 +8,12 @@ export class AuthController {
 
 	login = async (req, res) => {
 		try {
+			const result = validateAuthSchema(req.body)
+
+			if (!result) {
+				return res.status(422).json({ error: JSON.parse(result.error.message) })
+			}
+
 			const { username, password } = req.body
 			const isValidCredentials = await this.authModel.verifyCredentials({ username, password })
 
