@@ -16,7 +16,7 @@ await client.connect()
 export class AuthModel {
 	static async verifyCredentials({ usernameOrEmail, password }) {
 		try {
-			const isEmail = usernameOrEmail.includes('@');
+			const isEmail = usernameOrEmail.includes('@')
 			let query
 			if (isEmail) {
 				query = 'SELECT * FROM users WHERE email = $1 AND password = $2'
