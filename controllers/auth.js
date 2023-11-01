@@ -14,8 +14,8 @@ export class AuthController {
 				return res.status(422).json({ error: JSON.parse(result.error.message) })
 			}
 
-			const { username, password } = req.body
-			const isValidCredentials = await this.authModel.verifyCredentials({ username, password })
+			const { usernameOrEmail, password } = req.body
+			const isValidCredentials = await this.authModel.verifyCredentials({ usernameOrEmail, password })
 
 			if (!isValidCredentials) {
 				return res.status(401).json({ message: 'Invalid credentials' })
@@ -23,7 +23,7 @@ export class AuthController {
 
 			const jwtSecret = process.env.JWT_SECRET
 			const expiresIn = '365d'
-			const token = jwt.sign({ username }, jwtSecret, { expiresIn })
+			const token = jwt.sign({ usernameOrEmail }, jwtSecret, { expiresIn })
 
 			res.json({ token })
 		} catch (error) {

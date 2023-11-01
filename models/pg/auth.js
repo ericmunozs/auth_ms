@@ -14,9 +14,16 @@ const client = new Client(Config)
 await client.connect()
 
 export class AuthModel {
-	static async verifyCredentials({ username, password }) {
+	static async verifyCredentials({ usernameOrEmail, password }) {
 		try {
-			const res = await client.query('SELECT * FROM users WHERE username = $1 AND password = $2', [username, password])
+			const isEmail = usernameOrEmail.includes('@');
+			let query
+			if (isEmail) {
+				query = 'SELECT * FROM users WHERE email = $1 AND password = $2'
+			} else {
+				query = 'SELECT * FROM users WHERE username = $1 AND password = $2'
+			}
+			const res = await client.query(query, [usernameOrEmail, password])
 
 			if (res.rows.length === 0) {
 				return null
@@ -25,9 +32,6 @@ export class AuthModel {
 			return res
 		} catch (err) {
 			throw new Error('Error al verificar las credenciales: ' + err.message)
-		} finally {
-			await client.end()
-			console.log('client has disconnected')
 		}
 	}
 }

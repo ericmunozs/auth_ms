@@ -1,8 +1,8 @@
-### login with username + password
+### login with usernameOrEmail + password
 GET http://localhost:3000/login HTTP/1.1
 Content-Type: application/json
 
 {
-	"username": "usuario123",
+	"usernameOrEmail": "usuario123",
 	"password": "hash_de_contraseña"
 }

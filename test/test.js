@@ -9,7 +9,7 @@ describe('Auth microservice', () => {
 	it('should authenticate user and generate a jwt token', async () => {
 		const req = {
 			body: {
-				username: 'usuario123',
+				usernameOrEmail: 'usuario123',
 				password: 'hash_de_contraseña',
 			}
 		}
