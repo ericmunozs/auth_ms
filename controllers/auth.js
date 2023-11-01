@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken'
-import { validateAuthSchema } from '../schemas/auth'
+import { validateAuthSchema } from '../schemas/auth.js'
 
 export class AuthController {
 	constructor({ authModel }) {
