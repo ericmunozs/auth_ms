@@ -3,6 +3,6 @@ GET http://localhost:3000/login HTTP/1.1
 Content-Type: application/json
 
 {
-	"usernameOrEmail": "usuario123",
-	"password": "hash_de_contraseña"
+	"usernameOrEmail": "ejemplo_usuario",
+	"password": "hashed_password"
 }
