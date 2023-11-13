@@ -1,4 +1,5 @@
 import pg from 'pg'
+import bcrypt from 'bcrypt'
 
 const { Client } = pg
 
@@ -17,19 +18,27 @@ export class AuthModel {
 	static async verifyCredentials({ usernameOrEmail, password }) {
 		try {
 			const isEmail = usernameOrEmail.includes('@')
-			let query
-			if (isEmail) {
-				query = 'SELECT * FROM users WHERE email = $1 AND password = $2'
-			} else {
-				query = 'SELECT * FROM users WHERE username = $1 AND password = $2'
-			}
-			const res = await client.query(query, [usernameOrEmail, password])
+			let query, user
 
-			if (res.rows.length === 0) {
+			if (isEmail) {
+				query = 'SELECT * FROM users WHERE email = $1'
+				user = await client.query(query, [usernameOrEmail])
+			} else {
+				query = 'SELECT * FROM users WHERE username = $1'
+				user = await client.query(query, [usernameOrEmail])
+			}
+			if (user.rows.length === 0) {
 				return null
 			}
 
-			return res
+			const storedPassword = user.rows[0].password;
+			const isPasswordValid = await bcrypt.compare(password, storedPassword);
+
+			if (!isPasswordValid) {
+				return null
+			}
+
+			return user.rows[0]
 		} catch (err) {
 			throw new Error('Error al verificar las credenciales: ' + err.message)
 		}
