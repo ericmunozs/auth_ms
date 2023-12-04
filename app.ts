@@ -2,8 +2,9 @@ import express from 'express'
 import { corsMiddleware } from './middlewares/cors.js'
 import { createAuthRouter } from './routes/auth.js'
 import 'dotenv/config'
+import { IAuthModel } from './models/pg/authInterfaces.js'
 
-export const createApp = ({ authModel }) => {
+export const createApp = ({ authModel }: { authModel: IAuthModel }) => {
 	const app = express()
 	app.use(express.json())
 	app.use(corsMiddleware())

@@ -1,12 +1,12 @@
 import cors from 'cors'
 
-const whitelist = [
+const whitelist: string[] = [
 	'http://localhost:3000',
 ]
 
 export const corsMiddleware = ({ acceptedOrigins = whitelist } = {}) => cors({
 	origin: (origin, callback) => {
-		if (acceptedOrigins.includes(origin) || !origin) {
+		if (origin && acceptedOrigins.includes(origin) || !origin) {
 			return callback(null, true)
 		}
 
